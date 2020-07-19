@@ -1,8 +1,12 @@
 <template>
-  <div class="main-form"></div>
+  <div class="main-form">
+    {{ formData }}
+  </div>
 </template>
 <script>
-export default {};
+export default {
+  props: ["formData"],
+};
 </script>
 <style lang="scss">
 .main-form {
