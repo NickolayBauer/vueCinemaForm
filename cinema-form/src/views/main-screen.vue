@@ -1,5 +1,6 @@
 <template>
   <div class="main-screen">
+    <br />
     <slider-wrapper :count-show="5" class="genres">
       <label
         v-for="(item, index) in genres"
@@ -11,10 +12,21 @@
         <span class="slick-item__text">{{ item }}</span>
       </label>
     </slider-wrapper>
-    <slider-wrapper :count-show="3">
-      <label v-for="(item, index) in films" :key="index" class="slick-item">
-        <input type="radio" :value="item" v-model="form_data.model_film" />
-        <span class="slick-item__text">{{ item }}</span>
+    <br />
+    <br />
+    <slider-wrapper :count-show="3" class="films">
+      <label
+        v-for="(item, index) in films"
+        :key="index"
+        class="slick-item"
+        :class="{ 'checked-item': item.title == form_data.model_film }"
+      >
+        <input
+          type="radio"
+          :value="item.title"
+          v-model="form_data.model_film"
+        />
+        <img class="flims-img" :src="item.img" />
       </label>
     </slider-wrapper>
     <main-form :form-data="form_data"> </main-form>
@@ -35,12 +47,16 @@ export default {
         model_genre: "",
         model_film: "",
       },
-
       films: [
-        "Побег из Шоушенка",
-        "Терминатор",
-        "Старикам тут не место",
-        "Шрек навсегда",
+        {
+          title: "Интерстеллар",
+          img: require("../assets/img/Interstellar.png"),
+        },
+        {
+          title: "Побег из Шоушенка",
+          img: require("../assets/img/Shoushenk.png"),
+        },
+        { title: "Хоббит", img: require("../assets/img/Hobbit.png") },
       ],
       genres: [
         "Драма",
@@ -53,7 +69,7 @@ export default {
     };
   },
   mounted() {
-    this.form_data.model_film = this.films[0];
+    this.form_data.model_film = this.films[0].title;
     this.form_data.model_genre = this.genres[0];
   },
 };
@@ -89,6 +105,29 @@ export default {
       background: white;
       padding: 0 10px;
       color: #fa54fd;
+    }
+  }
+}
+.films .slick-item {
+  border-radius: 8px;
+  display: flex !important;
+  justify-content: center;
+  cursor: pointer;
+  input {
+    display: none;
+  }
+  .flims-img {
+    width: 390px;
+    height: 220px;
+    box-sizing: border-box;
+    object-fit: cover;
+    transition: 0.5s;
+    border-radius: 8px;
+    border: 3px solid transparent;
+  }
+  &.checked-item {
+    .flims-img {
+      border: 3px solid #fa54fd;
     }
   }
 }

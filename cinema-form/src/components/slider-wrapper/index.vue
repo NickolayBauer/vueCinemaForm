@@ -30,7 +30,7 @@ export default {
 @import "@/styles/slider.scss";
 .slick-root {
   width: 90%;
-  margin: 80px 80px;
+  margin: auto;
   .slick-item {
     .slick-item__text {
       text-align: center;
