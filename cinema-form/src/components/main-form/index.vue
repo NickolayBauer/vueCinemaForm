@@ -13,7 +13,7 @@
       </div>
       <div class="main-form__info-block">
         <span class="info-block__static-text">Выберите дату:</span> 
-        <Datepicker :language="ru" v-on:selected="clearBackground"></Datepicker>
+        <Datepicker :language="ru" v-on:selected="clearBackground" v-model="model_date"></Datepicker>
       </div>
       <div class="main-form__info-block">
         <span class="info-block__static-text">Количество билетов:</span>
@@ -28,8 +28,8 @@
         <input v-model="model_name" class="info-block__input-customer" placeholder="Введите ваше имя"/>
       </div>
       <div class="main-form__actions">
-        <button class="actions__button">Отправить</button>
-        <button class="actions__button">Отменить</button>
+        <button class="actions__button btn--submit">Отправить</button>
+        <button class="actions__button btn--cancel">Отменить</button>
       </div>
     </div>
   </div>
@@ -43,6 +43,7 @@ export default {
     return {
       model_count: 1,
       model_name: "",
+      model_date: '',
       ru: ru
     };
   },
@@ -91,16 +92,20 @@ export default {
         padding: 8px 23px;
         border: 1px solid #6A2389;
         border-radius: 4px;
-        background-color: #fff;
+        
         margin-right: 10px;
         font-size: 14px;
         font-weight: 500;
-        transition: 0.25s ease-in;
-        &:hover {
-          cursor: pointer;
-          background-color:#6A2389;
-          color: #fff;
-        }
+      }
+      .btn--submit {
+        background-color: #6A2389;
+        color: #fff;
+      }
+      .btn--cancel {
+        background-color: #fff;
+      }
+      .btn--submit:hover, .btn--cancel:hover {
+        cursor: pointer;
       }
     }
   }
