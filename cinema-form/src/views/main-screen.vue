@@ -8,7 +8,7 @@
         class="slick-item"
         :class="{ 'checked-item': item == form_data.model_genre }"
       >
-        <input type="radio" :value="item" v-model="form_data.model_genre" />
+        <input type="radio" :value="item" v-model="form_data.model_genre" v-on:click="filterFilms"/>
         <span class="slick-item__text">{{ item }}</span>
       </label>
     </slider-wrapper>
@@ -16,7 +16,7 @@
     <br />
     <slider-wrapper :count-show="3" class="films">
       <label
-        v-for="(item, index) in films"
+        v-for="(item, index) in filteredFilms"
         :key="index"
         class="slick-item"
         :class="{ 'checked-item': item.title == form_data.model_film }"
@@ -51,14 +51,17 @@ export default {
         {
           title: "Интерстеллар",
           img: require("../assets/img/Interstellar.png"),
+          genre: "Научная фантастика"
         },
         {
           title: "Побег из Шоушенка",
           img: require("../assets/img/Shoushenk.png"),
+          genre: "Драма"
         },
         { 
           title: "Хоббит", 
-          img: require("../assets/img/Hobbit.png") 
+          img: require("../assets/img/Hobbit.png"),
+          genre: "Фэнтези"
         },
       ],
       genres: [
@@ -68,13 +71,26 @@ export default {
         "Триллер",
         "Боевик",
         "Документальный",
+        "Научная фантастика",
+        "Фэнтези"
       ],
+      chosenGenres: ''
     };
   },
   mounted() {
     this.form_data.model_film = this.films[0].title;
     this.form_data.model_genre = this.genres[0];
   },
+  methods: {
+    filterFilms(e) {
+      this.chosenGenres = e.target.value
+    }
+  },
+  computed: {
+    filteredFilms() {
+      return this.films.filter(film => film.genre === this.chosenGenres)
+    }
+  }
 };
 </script>
 <style lang="scss">
