@@ -56,7 +56,10 @@ export default {
           title: "Побег из Шоушенка",
           img: require("../assets/img/Shoushenk.png"),
         },
-        { title: "Хоббит", img: require("../assets/img/Hobbit.png") },
+        { 
+          title: "Хоббит", 
+          img: require("../assets/img/Hobbit.png") 
+        },
       ],
       genres: [
         "Драма",
