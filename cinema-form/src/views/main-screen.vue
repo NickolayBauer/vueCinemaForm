@@ -14,7 +14,7 @@
     </slider-wrapper>
     <br />
     <br />
-    <slider-wrapper :count-show="3" class="films">
+    <slider-wrapper :count-show="3" class="films" v-if="filteredFilms.length">
       <label
         v-for="(item, index) in filteredFilms"
         :key="index"
@@ -29,6 +29,7 @@
         <img class="flims-img" :src="item.img" />
       </label>
     </slider-wrapper>
+    <h1 v-else class="no-films">Не найдено фильмов по вашему запросу</h1>
     <main-form :form-data="form_data"> </main-form>
   </div>
 </template>
@@ -51,17 +52,17 @@ export default {
         {
           title: "Интерстеллар",
           img: require("../assets/img/Interstellar.png"),
-          genre: "Научная фантастика"
+          genre: ["Научная фантастика", "Драма"]
         },
         {
           title: "Побег из Шоушенка",
           img: require("../assets/img/Shoushenk.png"),
-          genre: "Драма"
+          genre: ["Драма", "Комедия"]
         },
         { 
           title: "Хоббит", 
           img: require("../assets/img/Hobbit.png"),
-          genre: "Фэнтези"
+          genre: ["Фэнтези", "Комедия", "Боевик"]
         },
       ],
       genres: [
@@ -74,7 +75,7 @@ export default {
         "Научная фантастика",
         "Фэнтези"
       ],
-      chosenGenres: ''
+      chosenGenres: 'Драма'
     };
   },
   mounted() {
@@ -88,7 +89,10 @@ export default {
   },
   computed: {
     filteredFilms() {
-      return this.films.filter(film => film.genre === this.chosenGenres)
+      return this.films.filter(film => {
+        if (film.genre.length >= 2) return film.genre.includes(this.chosenGenres)
+        else return film.genre[0] === this.chosenGenres
+      })
     }
   }
 };
@@ -149,5 +153,8 @@ export default {
       border: 3px solid #fa54fd;
     }
   }
+}
+.no-films {
+  text-align: center;
 }
 </style>
