@@ -2,91 +2,133 @@
   <div class="main-form">
     <div class="main-form__form-inner">
       <div class="main-form-ann">
-        Аннотация
+        <div class="main-form-ann__header">Аннотация</div>
+        <div class="main-form-ann__text">{{ modelFilm.ann }}</div>
       </div>
       <div class="main-form__header">
-        {{ formData.model_film }}
+        {{ modelFilm.title }}
       </div>
       <div class="main-form__info-block">
         <span class="info-block__static-text">Жанр:</span>
-        {{ formData.model_genre }}
+        <span v-for="(genre, index) in modelFilm.genre" :key="index"
+          >{{ genre }}{{ index != modelFilm.genre.length - 1 ? ", " : "" }}
+        </span>
       </div>
       <div class="main-form__info-block">
-        <span class="info-block__static-text">Выберите дату:</span> 
-        <Datepicker :language="ru" v-on:selected="clearBackground" v-model="model_date"></Datepicker>
+        <span class="info-block__static-text">Выберите дату:</span>
+        <Datepicker
+          :language="ru"
+          v-on:selected="clearBackground"
+          v-model="model_date"
+        ></Datepicker>
       </div>
       <div class="main-form__info-block">
         <span class="info-block__static-text">Количество билетов:</span>
         {{ model_count }}
         <div class="info-block__buttons">
-          <button v-on:click="plusTicket" class="info-block__button">&plus;</button>
-          <button v-on:click="minusTicket" class="info-block__button" :class="{'unactive-button' : model_count === 1}">&minus;</button>
+          <button
+            v-on:click="plusTicket"
+            class="info-block__button"
+            :disabled="model_count === 10"
+          >
+            &plus;
+          </button>
+          <button
+            v-on:click="minusTicket"
+            class="info-block__button"
+            :disabled="model_count === 1"
+          >
+            &minus;
+          </button>
         </div>
       </div>
       <div class="main-form__info-block">
         <span class="info-block__static-text">Ваше имя:</span>
-        <input v-model="model_name" class="info-block__input-customer" placeholder="Введите ваше имя"/>
+        <input
+          v-model="model_name"
+          class="info-block__input-customer"
+          placeholder="Введите ваше имя"
+        />
       </div>
       <div class="main-form__actions">
-        <button class="actions__button btn--submit">Отправить</button>
-        <button class="actions__button btn--cancel" v-on:click="clearInfoBlock">Отменить</button>
+        <button class="actions__button btn--submit" @click="formSend">
+          Отправить
+        </button>
+        <button class="actions__button btn--cancel" @click="clearInfoBlock">
+          Отменить
+        </button>
       </div>
     </div>
   </div>
 </template>
 <script>
-import Datepicker from 'vuejs-datepicker'
-import {ru} from 'vuejs-datepicker/dist/locale'
+import Datepicker from "vuejs-datepicker";
+import { ru } from "vuejs-datepicker/dist/locale";
 export default {
-  props: ["formData"],
+  props: ["modelFilm"],
   data() {
     return {
       model_count: 1,
       model_name: "",
-      model_date: '',
-      ru: ru
+      model_date: "",
+      ru: ru,
     };
   },
   mounted() {
-    this.addBackground()
+    this.addBackground();
   },
   methods: {
+    formSend() {
+      let data = {};
+      data.film = this.modelFilm.title;
+      data.count = this.model_count;
+      data.date = this.model_date;
+      data.name = this.model_name;
+      console.log(data);
+    },
     plusTicket() {
-      ++this.model_count
+      ++this.model_count;
     },
     minusTicket() {
-      if(this.model_count !== 1) --this.model_count
+      if (this.model_count !== 1) --this.model_count;
     },
     clearBackground() {
-      const input = document.querySelector('.vdp-datepicker input')
-      input.classList.remove('input-date-img')
+      const input = document.querySelector(".vdp-datepicker input");
+      input.classList.remove("input-date-img");
     },
     addBackground() {
-      const input = document.querySelector('.vdp-datepicker input')
-      input.classList.add('input-date-img')
+      const input = document.querySelector(".vdp-datepicker input");
+      input.classList.add("input-date-img");
     },
     clearInfoBlock() {
-      this.model_count = 1
-      this.model_name = ""
-      this.model_date = ""
-      this.addBackground()
-    }
+      this.model_count = 1;
+      this.model_name = "";
+      this.model_date = "";
+      this.addBackground();
+    },
   },
   components: {
-    Datepicker
-  }
+    Datepicker,
+  },
 };
 </script>
 <style lang="scss">
 .main-form {
   background: #ffffff;
   border-radius: 8px;
-  height: 330px;
-  width: 1020px;
+  min-height: 330px;
+  height: 100%;
+  max-width: 1020px;
+  width: 90%;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 35px;
   .main-form-ann {
     float: right;
+    .main-form-ann__header {
+      font-weight: 500;
+    }
+    .main-form-ann__header {
+    }
   }
   .main-form__form-inner {
     padding: 40px;
@@ -97,27 +139,28 @@ export default {
       margin-bottom: 31px;
     }
     .main-form__actions {
-      margin-top: 37px;
+      margin-top: 25px;
       width: 100%;
       display: flex;
       justify-content: center;
       .actions__button {
         padding: 8px 23px;
-        border: 1px solid #6A2389;
+        border: 1px solid #6a2389;
         border-radius: 4px;
-        
+
         margin-right: 10px;
         font-size: 14px;
         font-weight: 500;
       }
       .btn--submit {
-        background-color: #6A2389;
+        background-color: #6a2389;
         color: #fff;
       }
       .btn--cancel {
         background-color: #fff;
       }
-      .btn--submit:hover, .btn--cancel:hover {
+      .btn--submit:hover,
+      .btn--cancel:hover {
         cursor: pointer;
       }
     }
@@ -134,6 +177,7 @@ export default {
     .info-block__buttons {
       display: inline-block;
       margin-left: 10px;
+      vertical-align: sub;
     }
     .info-block__button {
       border: none;
@@ -147,6 +191,7 @@ export default {
   }
   .vdp-datepicker {
     display: inline-block;
+    vertical-align: text-bottom;
     input {
       border: none;
       width: 100px;
@@ -156,11 +201,8 @@ export default {
     }
   }
 }
-.unactive-button {
-  color: #ccc;
-}
 .input-date-img {
-  background: url('icons/calendar.svg') no-repeat;
+  background: url("icons/calendar.svg") no-repeat;
   background-size: contain;
 }
 </style>

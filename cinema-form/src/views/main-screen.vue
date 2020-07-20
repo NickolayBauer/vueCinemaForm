@@ -8,29 +8,28 @@
         class="slick-item"
         :class="{ 'checked-item': item == form_data.model_genre }"
       >
-        <input type="radio" :value="item" v-model="form_data.model_genre" v-on:click="filterFilms(item)"/>
+        <input type="radio" :value="item" v-model="form_data.model_genre" />
         <span class="slick-item__text">{{ item }}</span>
       </label>
     </slider-wrapper>
     <br />
     <br />
-    <slider-wrapper :count-show="3" class="films" v-if="filteredFilms.length">
+    <slider-wrapper :count-show="3" class="films" v-if="showedFilms.length">
       <label
-        v-for="(item, index) in filteredFilms"
+        v-for="(item, index) in showedFilms"
         :key="index"
         class="slick-item"
-        :class="{ 'checked-item': item.title == form_data.model_film }"
+        :class="{ 'checked-item': item == form_data.model_film }"
       >
-        <input
-          type="radio"
-          :value="item.title"
-          v-model="form_data.model_film"
-        />
+        <input type="radio" :value="item" v-model="form_data.model_film" />
         <img class="flims-img" :src="item.img" />
       </label>
     </slider-wrapper>
-    <h1 v-else class="no-films">Не найдено фильмов по вашему запросу</h1>
-    <main-form :form-data="form_data"> </main-form>
+    <div v-else class="no-films">
+      <span>Не найдено фильмов по вашему запросу</span>
+    </div>
+    <main-form v-if="showedFilms.length" :model-film="form_data.model_film">
+    </main-form>
   </div>
 </template>
 <script>
@@ -52,19 +51,23 @@ export default {
         {
           title: "Интерстеллар",
           img: require("../assets/img/Interstellar.png"),
-          genre: ["Научная фантастика", "Драма"]
+          genre: ["Научная фантастика", "Драма"],
+          ann: "Текст 1",
         },
         {
           title: "Побег из Шоушенка",
           img: require("../assets/img/Shoushenk.png"),
-          genre: ["Драма", "Комедия"]
+          genre: ["Драма", "Комедия"],
+          ann: "Текст 2",
         },
-        { 
-          title: "Хоббит", 
+        {
+          title: "Хоббит",
           img: require("../assets/img/Hobbit.png"),
-          genre: ["Фэнтези", "Комедия", "Боевик"]
+          genre: ["Фэнтези", "Комедия", "Боевик"],
+          ann: "Текст 3",
         },
       ],
+      showedFilms: [],
       genres: [
         "Драма",
         "Комедия",
@@ -73,28 +76,40 @@ export default {
         "Боевик",
         "Документальный",
         "Научная фантастика",
-        "Фэнтези"
+        "Фэнтези",
       ],
-      chosenGenres: 'Драма'
     };
   },
   mounted() {
-    this.form_data.model_film = this.films[0].title;
+    this.form_data.model_film = this.films[0];
     this.form_data.model_genre = this.genres[0];
+    this.filteredFilms();
+  },
+  computed: {
+    model_genre() {
+      return this.form_data.model_genre;
+    },
+  },
+  watch: {
+    model_genre() {
+      this.filteredFilms();
+    },
   },
   methods: {
     filterFilms(item) {
-      this.chosenGenres = item
-    }
-  },
-  computed: {
+      this.chosenGenres = item;
+    },
     filteredFilms() {
-      return this.films.filter(film => {
-        if (film.genre.length >= 2) return film.genre.includes(this.chosenGenres)
-        else return film.genre[0] === this.chosenGenres
-      })
-    }
-  }
+      this.showedFilms = this.films.filter((film) => {
+        if (film.genre.length >= 2) {
+          return film.genre.includes(this.form_data.model_genre);
+        } else {
+          return film.genre[0] === this.form_data.model_genre;
+        }
+      });
+      this.form_data.model_film = this.showedFilms[0];
+    },
+  },
 };
 </script>
 <style lang="scss">
@@ -141,7 +156,7 @@ export default {
   }
   .flims-img {
     width: 390px;
-    height: 220px;
+    height: 200px;
     box-sizing: border-box;
     object-fit: cover;
     transition: 0.5s;
@@ -155,6 +170,12 @@ export default {
   }
 }
 .no-films {
+  color: white;
+  height: 200px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
 }
 </style>

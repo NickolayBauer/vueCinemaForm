@@ -33,3 +33,9 @@ body {
   flex: 1;
   flex-basis: auto;
 }
+
+.slick-slide,
+button,
+input {
+  outline: none;
+}
