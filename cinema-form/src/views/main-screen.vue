@@ -8,7 +8,7 @@
         class="slick-item"
         :class="{ 'checked-item': item == form_data.model_genre }"
       >
-        <input type="radio" :value="item" v-model="form_data.model_genre" v-on:click="filterFilms"/>
+        <input type="radio" :value="item" v-model="form_data.model_genre" v-on:click="filterFilms(item)"/>
         <span class="slick-item__text">{{ item }}</span>
       </label>
     </slider-wrapper>
@@ -82,8 +82,8 @@ export default {
     this.form_data.model_genre = this.genres[0];
   },
   methods: {
-    filterFilms(e) {
-      this.chosenGenres = e.target.value
+    filterFilms(item) {
+      this.chosenGenres = item
     }
   },
   computed: {
