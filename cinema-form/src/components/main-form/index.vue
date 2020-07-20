@@ -29,7 +29,7 @@
       </div>
       <div class="main-form__actions">
         <button class="actions__button btn--submit">Отправить</button>
-        <button class="actions__button btn--cancel">Отменить</button>
+        <button class="actions__button btn--cancel" v-on:click="clearInfoBlock">Отменить</button>
       </div>
     </div>
   </div>
@@ -47,6 +47,9 @@ export default {
       ru: ru
     };
   },
+  mounted() {
+    this.addBackground()
+  },
   methods: {
     plusTicket() {
       ++this.model_count
@@ -56,7 +59,17 @@ export default {
     },
     clearBackground() {
       const input = document.querySelector('.vdp-datepicker input')
-      input.style.background = "none"
+      input.classList.remove('input-date-img')
+    },
+    addBackground() {
+      const input = document.querySelector('.vdp-datepicker input')
+      input.classList.add('input-date-img')
+    },
+    clearInfoBlock() {
+      this.model_count = 1
+      this.model_name = ""
+      this.model_date = ""
+      this.addBackground()
     }
   },
   components: {
@@ -137,8 +150,6 @@ export default {
     input {
       border: none;
       width: 100px;
-      background: url('icons/calendar.svg') no-repeat;
-      background-size: contain;
       &:hover {
         cursor: pointer;
       }
@@ -147,5 +158,9 @@ export default {
 }
 .unactive-button {
   color: #ccc;
+}
+.input-date-img {
+  background: url('icons/calendar.svg') no-repeat;
+  background-size: contain;
 }
 </style>
