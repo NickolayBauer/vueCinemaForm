@@ -1,5 +1,5 @@
 <template>
-  <slick class="slick-root" ref="slick" :options="options">
+  <slick class="slick-root" ref="slick" :options="options" @destroy="handleDestroy" >
     <slot></slot>
   </slick>
 </template>
@@ -11,18 +11,41 @@ export default {
     slick,
   },
   props: ["countShow"],
+  methods: {
+    handleDestroy(event, slick) {
+      console.log('handleDestroy', slick.options = this.options);
+    },
+  },
   data() {
     return {
       options: {
         dots: false,
         slidesToShow: this.countShow,
+        responsive: [
+          {
+            breakpoint: 1400,
+            settings: {slidesToShow: 4}
+          },
+          {
+            breakpoint: 1200,
+            settings: {slidesToShow: 3}
+          },
+          {
+            breakpoint: 900,
+            settings: {slidesToShow: 2}
+          },
+          {
+            breakpoint: 600,
+            settings: {slidesToShow: 1}
+          }
+        ],
         prevArrow:
           '<button type="button" class="slick-prev swiper-button-prev">prev</button>',
         nextArrow:
           '<button type="button" class="slick-next swiper-button-next next-button-js">next</button>',
       },
     };
-  },
+  }
 };
 </script>
 
