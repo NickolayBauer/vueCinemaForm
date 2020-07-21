@@ -29,6 +29,9 @@ export default {
     reInit() {
       this.$refs.slick.destroy();
       this.$nextTick(() => {
+        if (this.$refs.slick == undefined) {
+          return;
+        }
         this.$refs.slick.create();
       });
     },

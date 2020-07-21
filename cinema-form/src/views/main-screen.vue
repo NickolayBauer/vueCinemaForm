@@ -97,7 +97,7 @@ export default {
         {
           title: "Побег из Шоушенка",
           img: require("../assets/img/Shoushenk.png"),
-          genre: [ "Боевик"],
+          genre: ["Боевик", "Драма"],
           ann: "Текст 2",
         },
         {
@@ -143,6 +143,9 @@ export default {
       this.showedFilms = this.films.filter((film) => {
         return film.genre.includes(this.form_data.model_genre);
       });
+      if (this.$refs.filmsSlick != undefined) {
+        this.$refs.filmsSlick.reInit();
+      }
       this.form_data.model_film = this.showedFilms[0];
     },
   },

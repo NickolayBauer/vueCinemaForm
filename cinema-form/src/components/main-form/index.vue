@@ -1,12 +1,12 @@
 <template>
   <div class="main-form">
     <div class="main-form__form-inner">
+      <div class="main-form__header">
+        {{ modelFilm.title }}
+      </div>
       <div class="main-form-ann">
         <div class="main-form-ann__header">Аннотация</div>
         <div class="main-form-ann__text">{{ modelFilm.ann }}</div>
-      </div>
-      <div class="main-form__header">
-        {{ modelFilm.title }}
       </div>
       <div class="main-form__info-block">
         <span class="info-block__static-text">Жанр:</span>
@@ -122,8 +122,15 @@ export default {
   width: 90%;
   margin: auto;
   margin-top: 55px;
+  margin-bottom: 15px;
   .main-form-ann {
     float: right;
+    @media screen and (max-width: 600px) {
+      float: left;
+      display:block;
+      width: 100%;
+      margin-bottom: 15px;
+    }
     .main-form-ann__header {
       font-weight: 500;
     }
@@ -131,7 +138,10 @@ export default {
     }
   }
   .main-form__form-inner {
-    padding: 40px;
+    @media screen and (min-width: 1300px) {
+      padding: 40px;
+    }
+    padding: 10px;
     .main-form__header {
       font-weight: bold;
       font-size: 36px;
