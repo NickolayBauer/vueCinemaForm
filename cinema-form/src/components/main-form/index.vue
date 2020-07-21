@@ -1,12 +1,12 @@
 <template>
   <div class="main-form">
     <div class="main-form__form-inner">
+      <div class="main-form__header">
+        {{ modelFilm.title }}
+      </div>
       <div class="main-form-ann">
         <div class="main-form-ann__header">Аннотация</div>
         <div class="main-form-ann__text">{{ modelFilm.ann }}</div>
-      </div>
-      <div class="main-form__header">
-        {{ modelFilm.title }}
       </div>
       <div class="main-form__info-block">
         <span class="info-block__static-text">Жанр:</span>
@@ -51,7 +51,11 @@
         />
       </div>
       <div class="main-form__actions">
-        <button class="actions__button btn--submit" @click="formSend">
+        <button
+          class="actions__button btn--submit"
+          @click="formSend"
+          :disabled="$v.$invalid"
+        >
           Отправить
         </button>
         <button class="actions__button btn--cancel" @click="clearInfoBlock">
@@ -64,6 +68,13 @@
 <script>
 import Datepicker from "vuejs-datepicker";
 import { ru } from "vuejs-datepicker/dist/locale";
+import {
+  required,
+  maxLength,
+  minLength,
+  maxValue,
+  minValue,
+} from "vuelidate/lib/validators";
 export default {
   props: ["modelFilm"],
   data() {
@@ -110,6 +121,21 @@ export default {
   components: {
     Datepicker,
   },
+  validations: {
+    model_count: {
+      required,
+      maxValue: maxValue(10),
+      minValue: minValue(1),
+    },
+    model_name: {
+      required,
+      maxLength: maxLength(180),
+      minLength: minLength(2),
+    },
+    model_date: {
+      required,
+    },
+  },
 };
 </script>
 <style lang="scss">
@@ -121,9 +147,17 @@ export default {
   max-width: 1020px;
   width: 90%;
   margin: auto;
-  margin-top: 35px;
+  margin-top: 55px;
+  margin-bottom: 15px;
   .main-form-ann {
     float: right;
+    width: 55%;
+    @media screen and (max-width: 600px) {
+      float: left;
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+    }
     .main-form-ann__header {
       font-weight: 500;
     }
@@ -131,7 +165,10 @@ export default {
     }
   }
   .main-form__form-inner {
-    padding: 40px;
+    @media screen and (min-width: 1300px) {
+      padding: 40px;
+    }
+    padding: 10px;
     .main-form__header {
       font-weight: bold;
       font-size: 36px;
@@ -153,6 +190,10 @@ export default {
         font-weight: 500;
       }
       .btn--submit {
+        &:disabled {
+          border: 1px solid rgba(0, 0, 0, 0.01);
+          background-color: rgba(0, 0, 0, 0.2);
+        }
         background-color: #6a2389;
         color: #fff;
       }

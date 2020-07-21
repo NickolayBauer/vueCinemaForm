@@ -20,6 +20,7 @@ export default {
     return {
       options: {
         dots: false,
+        infinite: false,
         slidesToShow: this.countShow,
         responsive: [
           {
