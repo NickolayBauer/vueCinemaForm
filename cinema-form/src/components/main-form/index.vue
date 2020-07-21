@@ -51,7 +51,11 @@
         />
       </div>
       <div class="main-form__actions">
-        <button class="actions__button btn--submit" @click="formSend">
+        <button
+          class="actions__button btn--submit"
+          @click="formSend"
+          :disabled="$v.$invalid"
+        >
           Отправить
         </button>
         <button class="actions__button btn--cancel" @click="clearInfoBlock">
@@ -64,6 +68,13 @@
 <script>
 import Datepicker from "vuejs-datepicker";
 import { ru } from "vuejs-datepicker/dist/locale";
+import {
+  required,
+  maxLength,
+  minLength,
+  maxValue,
+  minValue,
+} from "vuelidate/lib/validators";
 export default {
   props: ["modelFilm"],
   data() {
@@ -110,6 +121,21 @@ export default {
   components: {
     Datepicker,
   },
+  validations: {
+    model_count: {
+      required,
+      maxValue: maxValue(10),
+      minValue: minValue(1),
+    },
+    model_name: {
+      required,
+      maxLength: maxLength(180),
+      minLength: minLength(2),
+    },
+    model_date: {
+      required,
+    },
+  },
 };
 </script>
 <style lang="scss">
@@ -127,7 +153,7 @@ export default {
     float: right;
     @media screen and (max-width: 600px) {
       float: left;
-      display:block;
+      display: block;
       width: 100%;
       margin-bottom: 15px;
     }
@@ -163,6 +189,10 @@ export default {
         font-weight: 500;
       }
       .btn--submit {
+        &:disabled {
+          border: 1px solid rgba(0, 0, 0, 0.01);
+          background-color: rgba(0, 0, 0, 0.2);
+        }
         background-color: #6a2389;
         color: #fff;
       }
