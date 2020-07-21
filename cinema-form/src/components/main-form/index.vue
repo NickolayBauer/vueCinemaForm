@@ -161,7 +161,9 @@ export default {
     .main-form-ann__header {
       font-weight: 500;
     }
-    .main-form-ann__header {
+    .main-form-ann__text {
+      height: 175px;
+      padding-bottom: 10px;
     }
   }
   .main-form__form-inner {
