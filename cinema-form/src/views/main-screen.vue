@@ -1,7 +1,7 @@
 <template>
   <div class="main-screen">
     <br />
-    <slider-wrapper :count-show="5" class="genres">
+    <slider-wrapper :count-show="5" class="genres" :responsive="genreResp">
       <label
         v-for="(item, index) in genres"
         :key="index"
@@ -14,7 +14,13 @@
     </slider-wrapper>
     <br />
     <br />
-    <slider-wrapper :count-show="3" class="films" v-if="showedFilms.length">
+    <slider-wrapper
+      ref="filmsSlick"
+      :count-show="3"
+      class="films"
+      v-if="showedFilms.length"
+      :responsive="filmsResp"
+    >
       <label
         v-for="(item, index) in showedFilms"
         :key="index"
@@ -47,6 +53,40 @@ export default {
         model_genre: "",
         model_film: "",
       },
+      genreResp: [
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+          },
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+          },
+        },
+        {
+          breakpoint: 900,
+          settings: {
+            slidesToShow: 3,
+          },
+        },
+      ],
+      filmsResp: [
+        {
+          breakpoint: 750,
+          settings: {
+            slidesToShow: 1,
+          },
+        },
+        {
+          breakpoint: 1200,
+          settings: {
+            slidesToShow: 2,
+          },
+        },
+      ],
       films: [
         {
           title: "Интерстеллар",
@@ -57,13 +97,13 @@ export default {
         {
           title: "Побег из Шоушенка",
           img: require("../assets/img/Shoushenk.png"),
-          genre: ["Драма", "Комедия"],
+          genre: [ "Боевик"],
           ann: "Текст 2",
         },
         {
           title: "Хоббит",
           img: require("../assets/img/Hobbit.png"),
-          genre: ["Фэнтези", "Комедия", "Боевик"],
+          genre: ["Драма", "Фэнтези", "Комедия", "Боевик"],
           ann: "Текст 3",
         },
       ],
@@ -101,11 +141,7 @@ export default {
     },
     filteredFilms() {
       this.showedFilms = this.films.filter((film) => {
-        if (film.genre.length >= 2) {
-          return film.genre.includes(this.form_data.model_genre);
-        } else {
-          return film.genre[0] === this.form_data.model_genre;
-        }
+        return film.genre.includes(this.form_data.model_genre);
       });
       this.form_data.model_film = this.showedFilms[0];
     },
@@ -155,8 +191,9 @@ export default {
     display: none;
   }
   .flims-img {
-    width: 390px;
-    height: 200px;
+    max-width: 270px;
+    width: 100%;
+    height: 150px;
     box-sizing: border-box;
     object-fit: cover;
     transition: 0.5s;

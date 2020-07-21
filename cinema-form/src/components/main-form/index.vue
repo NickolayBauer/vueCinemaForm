@@ -121,7 +121,7 @@ export default {
   max-width: 1020px;
   width: 90%;
   margin: auto;
-  margin-top: 35px;
+  margin-top: 55px;
   .main-form-ann {
     float: right;
     .main-form-ann__header {

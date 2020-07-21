@@ -10,18 +10,28 @@ export default {
   components: {
     slick,
   },
-  props: ["countShow"],
+  props: ["countShow", "responsive"],
   data() {
     return {
       options: {
         dots: false,
+        infinite: false,
         slidesToShow: this.countShow,
+        responsive: this.responsive,
         prevArrow:
           '<button type="button" class="slick-prev swiper-button-prev">prev</button>',
         nextArrow:
           '<button type="button" class="slick-next swiper-button-next next-button-js">next</button>',
       },
     };
+  },
+  methods: {
+    reInit() {
+      this.$refs.slick.destroy();
+      this.$nextTick(() => {
+        this.$refs.slick.create();
+      });
+    },
   },
 };
 </script>
